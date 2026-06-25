@@ -1,0 +1,1543 @@
+{% set logo_url = url_for('static', filename='images/logo.jpg') %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account — VibrantGlaze</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-site: #fbf9f6;
+      --bg-card: #ffffff;
+      --bg-sidebar: #2c2724;
+      --text-primary: #2c2724;
+      --text-secondary: #7a6a60;
+      --text-light: #b8a898;
+      --color-gold: #c5a880;
+      --color-gold-dark: #a88a61;
+      --color-gold-light: #f5efe8;
+      --color-accent-pink: #dca8bd;
+      --color-success: #4caf7d;
+      --color-warning: #e8b94f;
+      --color-danger: #e05c5c;
+      --color-info: #5ca8d4;
+      --gold-gradient: linear-gradient(135deg, #ebd1ac 0%, #c5a880 50%, #a88a61 100%);
+      --resin-gradient: linear-gradient(135deg, #dca8bd 0%, #a4769a 50%, #7c4d7e 100%);
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+      --shadow-sm: 0 2px 8px rgba(44,39,36,0.06);
+      --shadow-md: 0 8px 24px rgba(44,39,36,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-site);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    h1,h2,h3,h4 { font-family: 'Cinzel', serif; font-weight: 600; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-site); }
+    ::-webkit-scrollbar-thumb { background: var(--color-gold-light); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--color-gold); }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: var(--bg-card);
+      border-bottom: 1px solid rgba(197,168,128,0.15);
+      padding: 0 28px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .header-brand img { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; }
+    .header-brand-name {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 1px;
+    }
+    .header-nav { display: flex; gap: 10px; align-items: center; }
+    .header-btn {
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(197,168,128,0.35);
+      color: var(--text-secondary);
+    }
+    .btn-outline:hover { border-color: var(--color-gold); color: var(--color-gold); }
+    .btn-gold {
+      background: var(--gold-gradient);
+      color: #fff;
+      font-weight: 600;
+    }
+    .btn-gold:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(197,168,128,0.3); }
+
+    /* ===== AUTH SCREEN ===== */
+    #auth-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 64px);
+      padding: 32px 20px;
+      background: linear-gradient(135deg, #fbf9f6 0%, #f5efe8 100%);
+    }
+    .auth-wrapper {
+      width: 100%;
+      max-width: 440px;
+    }
+    .auth-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      border: 1px solid rgba(197,168,128,0.12);
+    }
+    .auth-header {
+      background: linear-gradient(135deg, #2c2724, #3d3330);
+      padding: 32px 28px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-header::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(197,168,128,0.08) 0%, transparent 60%);
+    }
+    .auth-logo { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; margin: 0 auto 12px; display: block; }
+    .auth-header h2 { color: #fff; font-size: 20px; margin-bottom: 4px; }
+    .auth-header p { color: rgba(255,255,255,0.5); font-size: 13px; }
+    .auth-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(197,168,128,0.1);
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 14px;
+      background: none;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-light);
+      font-family: 'Outfit', sans-serif;
+      transition: var(--transition);
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid transparent;
+    }
+    .auth-tab-btn.active {
+      color: var(--color-gold-dark);
+      border-bottom-color: var(--color-gold);
+      background: var(--color-gold-light);
+    }
+    .auth-form-panel { display: none; padding: 28px; }
+    .auth-form-panel.active { display: block; }
+    .form-row { margin-bottom: 16px; }
+    .form-row label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 7px;
+    }
+    .form-row input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid rgba(197,168,128,0.2);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-primary);
+      font-family: 'Outfit', sans-serif;
+      transition: var(--transition);
+      background: var(--bg-site);
+    }
+    .form-row input:focus {
+      outline: none;
+      border-color: var(--color-gold);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(197,168,128,0.1);
+    }
+    .form-row .phone-group { display: flex; gap: 0; }
+    .phone-prefix {
+      background: var(--color-gold-light);
+      border: 1.5px solid rgba(197,168,128,0.2);
+      border-right: none;
+      border-radius: 8px 0 0 8px;
+      padding: 11px 14px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .phone-group input { border-radius: 0 8px 8px 0; }
+    .btn-full {
+      width: 100%;
+      padding: 13px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    .btn-primary-gold {
+      background: var(--gold-gradient);
+      color: #2c2724;
+    }
+    .btn-primary-gold:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(197,168,128,0.3); }
+    .social-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: var(--text-light);
+      font-size: 12px;
+    }
+    .social-divider::before, .social-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(197,168,128,0.15);
+    }
+    .btn-google {
+      background: #fff;
+      border: 1.5px solid rgba(197,168,128,0.25);
+      color: var(--text-primary);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-google:hover { background: var(--color-gold-light); border-color: var(--color-gold); }
+    .otp-sent-msg {
+      background: rgba(76,175,125,0.08);
+      border: 1px solid rgba(76,175,125,0.2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--color-success);
+      margin-bottom: 14px;
+      display: none;
+    }
+    .auth-error {
+      background: rgba(224,92,92,0.08);
+      border: 1px solid rgba(224,92,92,0.2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--color-danger);
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    /* ===== DASHBOARD ===== */
+    #dashboard-screen { display: none; }
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: calc(100vh - 64px);
+    }
+
+    /* ===== DASHBOARD SIDEBAR ===== */
+    .dash-sidebar {
+      background: var(--bg-sidebar);
+      padding: 0;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+    .dash-profile-box {
+      padding: 28px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+    }
+    .dash-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: #2c2724;
+      margin: 0 auto 12px;
+      border: 3px solid rgba(197,168,128,0.3);
+    }
+    .dash-user-name {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .dash-user-email { font-size: 12px; color: rgba(255,255,255,0.4); }
+    .dash-member-since { font-size: 11px; color: var(--color-gold); margin-top: 8px; }
+    .dash-nav { padding: 16px 12px; }
+    .dash-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      transition: var(--transition);
+      margin-bottom: 2px;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: 'Outfit', sans-serif;
+    }
+    .dash-nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); }
+    .dash-nav-item.active { background: rgba(197,168,128,0.12); color: var(--color-gold); }
+    .dash-nav-item i { width: 18px; font-size: 14px; }
+    .dash-nav-item .count-pill {
+      margin-left: auto;
+      background: rgba(197,168,128,0.15);
+      color: var(--color-gold);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .dash-nav-section {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.25);
+      padding: 10px 14px 6px;
+      margin-top: 8px;
+    }
+    .dash-logout-btn {
+      color: rgba(224,92,92,0.7) !important;
+    }
+    .dash-logout-btn:hover { color: var(--color-danger) !important; background: rgba(224,92,92,0.08) !important; }
+
+    /* ===== DASHBOARD MAIN ===== */
+    .dash-main { padding: 32px; overflow-y: auto; }
+    .dash-tab { display: none; }
+    .dash-tab.active { display: block; }
+
+    /* ===== TAB: OVERVIEW ===== */
+    .overview-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .ov-stat {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 18px;
+      border: 1px solid rgba(197,168,128,0.12);
+      text-align: center;
+      transition: var(--transition);
+    }
+    .ov-stat:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .ov-stat-icon { font-size: 24px; margin-bottom: 8px; }
+    .ov-stat-value { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+    .ov-stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+    /* ===== TAB: PROFILE ===== */
+    .profile-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid rgba(197,168,128,0.12);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .profile-card-header {
+      padding: 18px 24px;
+      background: linear-gradient(135deg, rgba(197,168,128,0.06), rgba(197,168,128,0.02));
+      border-bottom: 1px solid rgba(197,168,128,0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .profile-card-header h3 { font-size: 15px; }
+    .profile-card-header .icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: rgba(197,168,128,0.12);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-gold-dark);
+      font-size: 14px;
+    }
+    .profile-card-body { padding: 24px; }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .profile-form input, .profile-form textarea, .profile-form select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid rgba(197,168,128,0.2);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-primary);
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-site);
+      transition: var(--transition);
+    }
+    .profile-form input:focus, .profile-form textarea:focus {
+      outline: none;
+      border-color: var(--color-gold);
+      background: #fff;
+    }
+    .profile-form label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 7px;
+    }
+    .profile-form .form-row { margin-bottom: 16px; }
+    .save-btn {
+      padding: 11px 28px;
+      background: var(--gold-gradient);
+      border: none;
+      border-radius: 8px;
+      color: #2c2724;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Outfit', sans-serif;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .save-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ===== TAB: ORDERS ===== */
+    .order-card {
+      background: var(--bg-card);
+      border-radius: 14px;
+      border: 1px solid rgba(197,168,128,0.12);
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .order-card:hover { box-shadow: var(--shadow-md); border-color: rgba(197,168,128,0.2); }
+    .order-card-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(197,168,128,0.06);
+      flex-wrap: wrap;
+      gap: 8px;
+      background: rgba(197,168,128,0.02);
+    }
+    .order-id {
+      font-family: monospace;
+      font-size: 13px;
+      color: var(--color-gold-dark);
+      font-weight: 600;
+    }
+    .order-date { font-size: 12px; color: var(--text-secondary); }
+    .order-total { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-processing { background: rgba(232,185,79,0.12); color: #b8882a; }
+    .badge-shipped { background: rgba(92,168,212,0.12); color: #3a7fa8; }
+    .badge-delivered { background: rgba(76,175,125,0.12); color: #2d8a5d; }
+    .badge-cancelled { background: rgba(224,92,92,0.12); color: var(--color-danger); }
+    .badge-crafting { background: rgba(124,77,126,0.12); color: #7c4d7e; }
+    .badge-default { background: rgba(197,168,128,0.12); color: var(--color-gold-dark); }
+    .order-items { padding: 16px 20px; }
+    .order-item-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(197,168,128,0.1);
+    }
+    .order-item-row:last-child { border-bottom: none; }
+    .order-item-img {
+      width: 52px; height: 52px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid rgba(197,168,128,0.15);
+    }
+    .order-item-info { flex: 1; }
+    .order-item-name { font-size: 14px; font-weight: 500; }
+    .order-item-meta { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .order-item-price { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .order-tracking {
+      padding: 14px 20px;
+      border-top: 1px solid rgba(197,168,128,0.06);
+      background: rgba(197,168,128,0.02);
+    }
+    .tracking-steps {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .tracking-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      min-width: 90px;
+      position: relative;
+    }
+    .tracking-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 14px; left: 50%;
+      width: 100%;
+      height: 2px;
+      background: rgba(197,168,128,0.15);
+    }
+    .tracking-step.done:not(:last-child)::after { background: var(--color-gold); }
+    .tracking-dot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(197,168,128,0.1);
+      border: 2px solid rgba(197,168,128,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      color: var(--text-light);
+      z-index: 1;
+      flex-shrink: 0;
+    }
+    .tracking-step.done .tracking-dot {
+      background: var(--gold-gradient);
+      border-color: var(--color-gold);
+      color: #2c2724;
+    }
+    .tracking-step.current .tracking-dot {
+      background: #fff;
+      border-color: var(--color-gold);
+      color: var(--color-gold-dark);
+      box-shadow: 0 0 0 3px rgba(197,168,128,0.15);
+    }
+    .tracking-label { font-size: 10px; color: var(--text-secondary); text-align: center; margin-top: 6px; }
+    .tracking-step.done .tracking-label { color: var(--color-gold-dark); font-weight: 500; }
+    .tracking-step.current .tracking-label { color: var(--text-primary); font-weight: 600; }
+    .order-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .order-footer-btn {
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid rgba(197,168,128,0.25);
+      background: transparent;
+      color: var(--color-gold-dark);
+      font-family: 'Outfit', sans-serif;
+    }
+    .order-footer-btn:hover { background: var(--color-gold-light); }
+
+    /* ===== TAB: WISHLIST ===== */
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .wishlist-card {
+      background: var(--bg-card);
+      border-radius: 14px;
+      border: 1px solid rgba(197,168,128,0.12);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .wishlist-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .wishlist-img {
+      width: 100%; height: 160px;
+      object-fit: cover;
+    }
+    .wishlist-info { padding: 14px; }
+    .wishlist-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+    .wishlist-price { font-size: 15px; font-weight: 700; color: var(--color-gold-dark); margin-bottom: 10px; }
+    .wishlist-actions { display: flex; gap: 8px; }
+    .w-btn {
+      flex: 1;
+      padding: 7px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      text-align: center;
+    }
+    .w-btn-gold { background: var(--gold-gradient); color: #2c2724; font-weight: 600; }
+    .w-btn-ghost { background: rgba(224,92,92,0.08); color: var(--color-danger); border: 1px solid rgba(224,92,92,0.15); }
+    .w-btn-ghost:hover { background: rgba(224,92,92,0.15); }
+
+    /* ===== TAB: SAVED DESIGNS ===== */
+    .designs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .design-card {
+      background: var(--bg-card);
+      border-radius: 14px;
+      border: 1px solid rgba(197,168,128,0.12);
+      padding: 18px;
+      transition: var(--transition);
+      position: relative;
+    }
+    .design-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .design-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 10px;
+      background: rgba(197,168,128,0.1);
+      color: var(--color-gold-dark);
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .design-product { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+    .design-details { font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+    .design-date { font-size: 11px; color: var(--text-light); }
+    .design-delete {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: none;
+      border: none;
+      color: var(--color-danger);
+      cursor: pointer;
+      font-size: 13px;
+      opacity: 0.4;
+      transition: var(--transition);
+    }
+    .design-delete:hover { opacity: 1; }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+    .empty-state i { font-size: 52px; margin-bottom: 16px; opacity: 0.2; }
+    .empty-state h3 { font-size: 18px; margin-bottom: 8px; color: var(--text-primary); }
+    .empty-state p { font-size: 14px; margin-bottom: 20px; }
+    .empty-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 24px;
+      background: var(--gold-gradient);
+      border-radius: 8px;
+      color: #2c2724;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      transition: var(--transition);
+    }
+    .empty-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-card);
+      border: 1px solid rgba(197,168,128,0.2);
+      border-radius: 10px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-md);
+      z-index: 9999;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      min-width: 260px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-left: 3px solid var(--color-success); }
+    .toast.success i { color: var(--color-success); font-size: 18px; }
+    .toast.error { border-left: 3px solid var(--color-danger); }
+    .toast.error i { color: var(--color-danger); font-size: 18px; }
+    .toast.info { border-left: 3px solid var(--color-info); }
+    .toast.info i { color: var(--color-info); font-size: 18px; }
+
+    /* ===== PAGE TITLE ===== */
+    .dash-page-title {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dash-page-title h2 { font-size: 20px; }
+    .dash-page-title p { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+    @media (max-width: 900px) {
+      .dashboard-layout { grid-template-columns: 1fr; }
+      .dash-sidebar { display: none; }
+    }
+    @media (max-width: 600px) {
+      .form-grid-2 { grid-template-columns: 1fr; }
+      .dash-main { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="header-brand" onclick="window.location.href='index.html'">
+    <img src="{{ logo_url }}" alt="VibrantGlaze">
+    <span class="header-brand-name">VIBRANTGLAZE</span>
+  </div>
+  <div class="header-nav">
+    <button class="header-btn btn-outline" onclick="window.location.href='index.html'">
+      <i class="fa-solid fa-store"></i> Storefront
+    </button>
+    <button class="header-btn btn-outline" onclick="goToShop()">
+      <i class="fa-solid fa-bag-shopping"></i> Shop
+    </button>
+    <button class="header-btn btn-gold" id="header-logout-btn" onclick="handleLogout()" style="display:none;">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+  </div>
+</header>
+
+<!-- ===== AUTH SCREEN ===== -->
+<div id="auth-screen">
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <img src="{{ logo_url }}" alt="VibrantGlaze" class="auth-logo">
+        <h2>My VibrantGlaze Account</h2>
+        <p>Sign in to manage your orders, wishlist & custom designs</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" onclick="switchTab('login')"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+        <button class="auth-tab-btn" onclick="switchTab('register')"><i class="fa-solid fa-user-plus"></i> Register</button>
+        <button class="auth-tab-btn" onclick="switchTab('otp')"><i class="fa-solid fa-mobile-screen"></i> Mobile OTP</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div class="auth-form-panel active" id="panel-login">
+        <div class="auth-error" id="login-error"></div>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-row">
+            <label>Email Address</label>
+            <input type="email" id="login-email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-row">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn-full btn-primary-gold"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+        </form>
+        <div class="social-divider">OR CONTINUE WITH</div>
+        <button class="btn-full btn-google" onclick="googleLogin()">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div class="auth-form-panel" id="panel-register">
+        <div class="auth-error" id="register-error"></div>
+        <form onsubmit="handleRegister(event)">
+          <div class="form-row">
+            <label>Full Name</label>
+            <input type="text" id="reg-name" placeholder="Alex Morgan" required>
+          </div>
+          <div class="form-row">
+            <label>Email Address</label>
+            <input type="email" id="reg-email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-row">
+            <label>Password</label>
+            <input type="password" id="reg-password" placeholder="Minimum 6 characters" minlength="6" required>
+          </div>
+          <div class="form-row">
+            <label>Mobile Number (Optional)</label>
+            <div class="phone-group">
+              <span class="phone-prefix">+91</span>
+              <input type="tel" id="reg-phone" placeholder="75XXXXXX" pattern="[0-9]{10}">
+            </div>
+          </div>
+          <button type="submit" class="btn-full btn-primary-gold"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+        </form>
+      </div>
+
+      <!-- OTP FORM -->
+      <div class="auth-form-panel" id="panel-otp">
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">Enter your mobile number to receive a one-time password.</p>
+        <div class="otp-sent-msg" id="otp-sent-msg"><i class="fa-solid fa-check-circle"></i> OTP sent! Demo code: <strong>1234</strong></div>
+        <form onsubmit="handleOTP(event)">
+          <div class="form-row">
+            <label>Mobile Number</label>
+            <div class="phone-group">
+              <span class="phone-prefix">+91</span>
+              <input type="tel" id="otp-phone" placeholder="75XXXXXX" pattern="[0-9]{10}" required>
+            </div>
+          </div>
+          <div class="form-row" id="otp-code-row" style="display:none;">
+            <label>OTP Code</label>
+            <input type="text" id="otp-code" placeholder="Enter 4-digit OTP" pattern="[0-9]{4}" maxlength="4">
+          </div>
+          <button type="submit" class="btn-full btn-primary-gold" id="otp-btn"><i class="fa-solid fa-mobile-screen"></i> Send OTP</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboard-screen">
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="dash-sidebar">
+      <div class="dash-profile-box">
+        <div class="dash-avatar" id="dash-avatar">AV</div>
+        <div class="dash-user-name" id="dash-name">Loading...</div>
+        <div class="dash-user-email" id="dash-email">...</div>
+        <div class="dash-member-since"><i class="fa-solid fa-star"></i> Vibrant Member</div>
+      </div>
+      <nav class="dash-nav">
+        <div class="dash-nav-section">Dashboard</div>
+        <button class="dash-nav-item active" onclick="showTab('overview')">
+          <i class="fa-solid fa-chart-pie"></i> Overview
+        </button>
+        <div class="dash-nav-section">My Account</div>
+        <button class="dash-nav-item" onclick="showTab('profile')">
+          <i class="fa-solid fa-address-card"></i> Profile & Address
+        </button>
+        <div class="dash-nav-section">Shopping</div>
+        <button class="dash-nav-item" onclick="showTab('orders')">
+          <i class="fa-solid fa-box-open"></i> My Orders
+          <span class="count-pill" id="orders-count">0</span>
+        </button>
+        <button class="dash-nav-item" onclick="showTab('wishlist')">
+          <i class="fa-solid fa-heart"></i> Wishlist
+          <span class="count-pill" id="wishlist-count">0</span>
+        </button>
+        <button class="dash-nav-item" onclick="showTab('designs')">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Saved Designs
+          <span class="count-pill" id="designs-count">0</span>
+        </button>
+        <div class="dash-nav-section">Account</div>
+        <button class="dash-nav-item dash-logout-btn" onclick="handleLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dash-main">
+
+      <!-- OVERVIEW TAB -->
+      <div class="dash-tab active" id="tab-overview">
+        <div class="dash-page-title">
+          <div>
+            <h2>Welcome back, <span id="welcome-name" style="color:var(--color-gold-dark)">!</span></h2>
+            <p>Here's your account summary</p>
+          </div>
+          <button class="save-btn" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-store"></i> Browse Shop
+          </button>
+        </div>
+        <div class="overview-stats">
+          <div class="ov-stat">
+            <div class="ov-stat-icon" style="color:var(--color-gold-dark)"><i class="fa-solid fa-box-open"></i></div>
+            <div class="ov-stat-value" id="ov-orders">0</div>
+            <div class="ov-stat-label">Orders Placed</div>
+          </div>
+          <div class="ov-stat">
+            <div class="ov-stat-icon" style="color:var(--color-success)"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="ov-stat-value" id="ov-delivered">0</div>
+            <div class="ov-stat-label">Delivered</div>
+          </div>
+          <div class="ov-stat">
+            <div class="ov-stat-icon" style="color:var(--color-danger)"><i class="fa-solid fa-heart"></i></div>
+            <div class="ov-stat-value" id="ov-wishlist">0</div>
+            <div class="ov-stat-label">Wishlisted</div>
+          </div>
+          <div class="ov-stat">
+            <div class="ov-stat-icon" style="color:#7c4d7e"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <div class="ov-stat-value" id="ov-designs">0</div>
+            <div class="ov-stat-label">Saved Designs</div>
+          </div>
+        </div>
+
+        <!-- Recent order snippet -->
+        <div class="profile-card">
+          <div class="profile-card-header">
+            <div class="icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <h3>Recent Order</h3>
+          </div>
+          <div class="profile-card-body" id="overview-recent-order">
+            <div class="empty-state" style="padding:30px">
+              <i class="fa-solid fa-inbox" style="font-size:36px; margin-bottom:10px;"></i>
+              <p>No orders yet. <button class="empty-cta" style="display:inline-flex; margin-top:10px;" onclick="window.location.href='index.html'">Start Shopping</button></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE TAB -->
+      <div class="dash-tab" id="tab-profile">
+        <div class="dash-page-title">
+          <div>
+            <h2>Profile & Address</h2>
+            <p>Update your personal details and default shipping address</p>
+          </div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-card-header">
+            <div class="icon"><i class="fa-solid fa-user"></i></div>
+            <h3>Personal Information</h3>
+          </div>
+          <div class="profile-card-body">
+            <form class="profile-form" onsubmit="saveProfile(event)">
+              <div class="form-grid-2">
+                <div class="form-row">
+                  <label>Full Name</label>
+                  <input type="text" id="p-name" required>
+                </div>
+                <div class="form-row">
+                  <label>Email Address</label>
+                  <input type="email" id="p-email" readonly style="opacity:0.6; cursor:not-allowed;">
+                </div>
+                <div class="form-row">
+                  <label>Mobile Number</label>
+                  <input type="tel" id="p-phone" placeholder="+91 8573XXXX">
+                </div>
+                <div class="form-row" style="grid-column: 1/-1;">
+                  <label>Default Shipping Address</label>
+                  <textarea id="p-address" rows="3" placeholder="Flat No., Building, Street, City, State - PIN Code"></textarea>
+                </div>
+              </div>
+              <div style="margin-top:16px;">
+                <button type="submit" class="save-btn"><i class="fa-solid fa-save"></i> Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-card-header">
+            <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3>Account Security</h3>
+          </div>
+          <div class="profile-card-body">
+            <p style="font-size:13px; color:var(--text-secondary);">Your password is stored securely. To change your password, contact us via WhatsApp or email.</p>
+            <div style="display:flex; gap:10px; margin-top:14px;">
+              <a href="https://wa.me/919228221331?text=I want to reset my VibrantGlaze account password" target="_blank" style="display:inline-flex; align-items:center; gap:8px; padding:9px 18px; background:rgba(76,175,125,0.1); border:1px solid rgba(76,175,125,0.2); border-radius:8px; font-size:13px; color:var(--color-success); font-weight:500;">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp Support
+              </a>
+              <a href="mailto:nehatosawad@gmail.com?subject=Password Reset - VibrantGlaze" style="display:inline-flex; align-items:center; gap:8px; padding:9px 18px; background:rgba(92,168,212,0.1); border:1px solid rgba(92,168,212,0.2); border-radius:8px; font-size:13px; color:var(--color-info); font-weight:500;">
+                <i class="fa-solid fa-envelope"></i> Email Support
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDERS TAB -->
+      <div class="dash-tab" id="tab-orders">
+        <div class="dash-page-title">
+          <div>
+            <h2>My Orders</h2>
+            <p>Your order history and live tracking</p>
+          </div>
+        </div>
+        <div id="orders-container">
+          <div class="empty-state">
+            <i class="fa-solid fa-box-open"></i>
+            <h3>No Orders Yet</h3>
+            <p>You haven't placed any orders. Start shopping!</p>
+            <button class="empty-cta" onclick="window.location.href='index.html'"><i class="fa-solid fa-store"></i> Browse Products</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WISHLIST TAB -->
+      <div class="dash-tab" id="tab-wishlist">
+        <div class="dash-page-title">
+          <div>
+            <h2>My Wishlist</h2>
+            <p>Products you've saved for later</p>
+          </div>
+        </div>
+        <div id="wishlist-container" class="wishlist-grid"></div>
+      </div>
+
+      <!-- DESIGNS TAB -->
+      <div class="dash-tab" id="tab-designs">
+        <div class="dash-page-title">
+          <div>
+            <h2>Saved Designs</h2>
+            <p>Your custom resin configurations saved for reordering</p>
+          </div>
+        </div>
+        <div id="designs-container" class="designs-grid"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <i class="fa-solid fa-circle-check" id="toast-icon"></i>
+  <span id="toast-msg">Done!</span>
+</div>
+
+<script>
+const logoUrl = '{{ logo_url }}';
+const API = '/api';
+let currentUser = null;
+let allProducts = [];
+let otpSent = false;
+
+// ===== TOAST =====
+function showToast(msg, type='success') {
+  const toast = document.getElementById('toast');
+  const icons = { success:'fa-circle-check', error:'fa-circle-xmark', info:'fa-circle-info' };
+  toast.className = 'toast ' + type + ' show';
+  document.getElementById('toast-icon').className = 'fa-solid ' + icons[type];
+  document.getElementById('toast-msg').textContent = msg;
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+// ===== AUTH TAB SWITCH =====
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.auth-form-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.auth-tab-btn:nth-child(${tab==='login'?1:tab==='register'?2:3})`).classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+// ===== LOGIN =====
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+
+  // Try live API first
+  try {
+    const res = await fetch(API+'/auth/login', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      onLoginSuccess(data.user);
+      return;
+    }
+  } catch(e) { /* server offline, use local fallback */ }
+
+  // Offline fallback: check localStorage users
+  const localUsers = JSON.parse(localStorage.getItem('vg_local_users') || '[]');
+  const found = localUsers.find(u => u.email === email && u.password === password);
+  if (found) {
+    const { password: _, ...safeUser } = found;
+    onLoginSuccess(safeUser);
+    return;
+  }
+
+  // Admin shortcut: admin@vibrantglaze.com / admin123
+  if (email === 'admin@vibrantglaze.com' && password === 'admin123') {
+    onLoginSuccess({ name:'Admin', email, phone:'', address:'', isAdmin:true, wishlist:[], savedDesigns:[] });
+    return;
+  }
+
+  errEl.textContent = 'Invalid email or password. If you registered here before, try again. Or use Register tab to create an account.';
+  errEl.style.display = 'block';
+}
+
+// ===== REGISTER =====
+async function handleRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim().toLowerCase();
+  const password = document.getElementById('reg-password').value;
+  const phone = document.getElementById('reg-phone').value;
+  const errEl = document.getElementById('register-error');
+  errEl.style.display = 'none';
+
+  // Try live API first
+  try {
+    const res = await fetch(API+'/auth/register', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, email, password, phone })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      onLoginSuccess(data.user);
+      showToast('Account created! Welcome to VibrantGlaze!');
+      return;
+    }
+  } catch(e) { /* server offline, use local fallback */ }
+
+  // Offline fallback: save to localStorage
+  const localUsers = JSON.parse(localStorage.getItem('vg_local_users') || '[]');
+  if (localUsers.find(u => u.email === email)) {
+    errEl.textContent = 'An account with this email already exists. Please log in.';
+    errEl.style.display = 'block';
+    return;
+  }
+  const newUser = { name, email, password, phone, address:'', isAdmin:false, wishlist:[], savedDesigns:[] };
+  localUsers.push(newUser);
+  localStorage.setItem('vg_local_users', JSON.stringify(localUsers));
+  const { password: _, ...safeUser } = newUser;
+  onLoginSuccess(safeUser);
+  showToast('Account created! Welcome to VibrantGlaze!');
+}
+
+
+// ===== GOOGLE LOGIN (SIMULATED) =====
+function googleLogin() {
+  const fakeUser = {
+    name: 'Google User',
+    email: 'googleuser@gmail.com',
+    phone: '',
+    address: '',
+    isAdmin: false,
+    wishlist: [],
+    savedDesigns: []
+  };
+  onLoginSuccess(fakeUser);
+  showToast('Logged in with Google (simulated)');
+}
+
+// ===== OTP =====
+function handleOTP(e) {
+  e.preventDefault();
+  if (!otpSent) {
+    otpSent = true;
+    document.getElementById('otp-sent-msg').style.display = 'block';
+    document.getElementById('otp-code-row').style.display = 'block';
+    document.getElementById('otp-btn').textContent = 'Verify OTP';
+    document.getElementById('otp-btn').innerHTML = '<i class="fa-solid fa-check"></i> Verify OTP';
+  } else {
+    const code = document.getElementById('otp-code').value;
+    if (code === '1234') {
+      const phone = document.getElementById('otp-phone').value;
+      const fakeUser = { name:'Mobile User', email:'otp_'+phone+'@vibrantglaze.com', phone, address:'', isAdmin:false, wishlist:[], savedDesigns:[] };
+      onLoginSuccess(fakeUser);
+    } else {
+      showToast('Invalid OTP. Use demo code: 1234', 'error');
+    }
+  }
+}
+
+// ===== ON LOGIN SUCCESS =====
+function onLoginSuccess(user) {
+  currentUser = user;
+  localStorage.setItem('vg_user', JSON.stringify(user));
+  if (user.isAdmin) localStorage.setItem('vg_admin_session', JSON.stringify(user));
+  showDashboard();
+}
+
+// ===== SHOW DASHBOARD =====
+async function showDashboard() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('dashboard-screen').style.display = 'block';
+  document.getElementById('header-logout-btn').style.display = 'flex';
+
+  const initials = (currentUser.name||'?').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('dash-avatar').textContent = initials;
+  document.getElementById('dash-name').textContent = currentUser.name;
+  document.getElementById('dash-email').textContent = currentUser.email;
+  document.getElementById('welcome-name').textContent = currentUser.name.split(' ')[0] + '!';
+
+  // Fill profile form
+  document.getElementById('p-name').value = currentUser.name || '';
+  document.getElementById('p-email').value = currentUser.email || '';
+  document.getElementById('p-phone').value = currentUser.phone || '';
+  document.getElementById('p-address').value = currentUser.address || '';
+
+  await loadAllProducts();
+  await loadOrders();
+  loadWishlist();
+  loadDesigns();
+  updateOverviewStats();
+}
+
+// ===== LOAD PRODUCTS =====
+async function loadAllProducts() {
+  try {
+    allProducts = await fetch(API+'/products').then(r=>r.json());
+  } catch(e) { allProducts = []; }
+}
+
+// ===== LOAD ORDERS =====
+async function loadOrders() {
+  let apiOrders = [];
+  try {
+    const res = await fetch(API + '/orders');
+    if (res.ok) apiOrders = await res.json();
+  } catch (e) {}
+
+  const localOrders = JSON.parse(localStorage.getItem('vg_orders') || '[]');
+  const byId = new Map();
+  localOrders.forEach(o => byId.set(o.orderId, o));
+  apiOrders.forEach(o => byId.set(o.orderId, o));
+  const mergedOrders = [...byId.values()];
+  localStorage.setItem('vg_orders', JSON.stringify(mergedOrders));
+
+  const myOrders = mergedOrders.filter(o => o.customerEmail === currentUser.email);
+
+  document.getElementById('orders-count').textContent = myOrders.length;
+  document.getElementById('ov-orders').textContent = myOrders.length;
+  document.getElementById('ov-delivered').textContent = myOrders.filter(o=>o.status==='Delivered').length;
+
+  const container = document.getElementById('orders-container');
+  if (!myOrders.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="fa-solid fa-box-open"></i>
+        <h3>No Orders Yet</h3>
+        <p>You haven't placed any orders. Start shopping!</p>
+        <button class="empty-cta" onclick="window.location.href='index.html'"><i class="fa-solid fa-store"></i> Browse Products</button>
+      </div>`;
+    return;
+  }
+  container.innerHTML = myOrders.reverse().map(o => renderOrderCard(o)).join('');
+
+  // Show recent in overview
+  const recent = myOrders[0];
+  if (recent) {
+    document.getElementById('overview-recent-order').innerHTML = renderOrderCard(recent);
+  }
+}
+
+function orderStatusBadge(status) {
+  const map = {
+    'Awaiting Payment': 'badge-default',
+    'Awaiting Payment Confirmation': 'badge-default',
+    'Processing': 'badge-processing',
+    'Crafting': 'badge-crafting',
+    'Shipped': 'badge-shipped',
+    'Out for Delivery': 'badge-shipped',
+    'Delivered': 'badge-delivered',
+    'Cancelled': 'badge-cancelled',
+    'Return Requested': 'badge-processing',
+    'Return Approved': 'badge-processing',
+    'Refunded': 'badge-delivered',
+    'Exchange Requested': 'badge-processing',
+    'Exchange Approved': 'badge-processing',
+    'Exchanged': 'badge-delivered',
+  };
+  return `<span class="badge ${map[status]||'badge-default'}">${status}</span>`;
+}
+
+const TRACKING_STEPS_ORDER = ['Processing','Crafting','Quality Check','Ready to Ship','Shipped','Out for Delivery','Delivered'];
+
+function renderOrderCard(order) {
+  const stepIdx = TRACKING_STEPS_ORDER.indexOf(order.status);
+  const stepsHtml = TRACKING_STEPS_ORDER.map((step, i) => {
+    let cls = '';
+    if (i < stepIdx) cls = 'done';
+    else if (i === stepIdx) cls = 'current';
+    return `
+      <div class="tracking-step ${cls}">
+        <div class="tracking-dot">${i < stepIdx ? '<i class="fa-solid fa-check"></i>' : (i+1)}</div>
+        <div class="tracking-label">${step}</div>
+      </div>`;
+  }).join('');
+
+  const items = (order.items||[]).map(item => `
+    <div class="order-item-row">
+      <img src="${item.image||logoUrl}" alt="${item.title}" class="order-item-img" onerror="this.src='${logoUrl}'">
+      <div class="order-item-info">
+        <div class="order-item-name">${item.title}</div>
+        <div class="order-item-meta">Qty: ${item.qty} &bull; ${item.size||'Standard'}</div>
+      </div>
+      <div class="order-item-price">Rs. ${(item.price*item.qty).toLocaleString('en-IN')}</div>
+    </div>`).join('');
+
+  return `
+    <div class="order-card">
+      <div class="order-card-header">
+        <div>
+          <div class="order-id">${order.orderId}</div>
+          <div class="order-date"><i class="fa-regular fa-calendar" style="margin-right:5px;"></i>${order.date}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          ${orderStatusBadge(order.status)}
+          <div class="order-total">Rs. ${order.grandTotal.toLocaleString('en-IN')}</div>
+        </div>
+      </div>
+      <div class="order-items">${items}</div>
+      ${order.status !== 'Cancelled' ? `
+      <div class="order-tracking">
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--text-secondary); margin-bottom:12px; font-weight:600;">
+          <i class="fa-solid fa-route" style="margin-right:6px;"></i>Order Journey
+        </div>
+        <div class="tracking-steps">${stepsHtml}</div>
+      </div>` : ''}
+      <div class="order-footer-row">
+        <span>Payment: <strong>${order.paymentMethod?.toUpperCase()}</strong> &bull; Ship via <strong>${order.shippingSpeed||'Standard'}</strong></span>
+        <div style="display:flex; gap:8px;">
+          ${order.status === 'Delivered' ? `<button class="order-footer-btn" onclick="requestReturnExchange('${order.orderId}')"><i class="fa-solid fa-rotate-left"></i> Return/Exchange</button>` : ''}
+          <button class="order-footer-btn" onclick="window.location.href='index.html'"><i class="fa-solid fa-bag-shopping"></i> Reorder</button>
+          <button class="order-footer-btn" onclick="window.location.href='https://wa.me/919228221331?text=Order inquiry: ${order.orderId}'" target="_blank"><i class="fa-brands fa-whatsapp"></i> Help</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function requestReturnExchange(orderId) {
+  const type = prompt("Enter 'RETURN' for a refund or 'EXCHANGE' for an exchange:");
+  if (!type) return;
+  const cleanType = type.trim().toUpperCase();
+  if (cleanType !== 'RETURN' && cleanType !== 'EXCHANGE') {
+    alert("Invalid option. Please enter either 'RETURN' or 'EXCHANGE'.");
+    return;
+  }
+  
+  const reason = prompt(`Please enter the reason for your ${cleanType.toLowerCase()}:`);
+  if (!reason || !reason.trim()) {
+    alert("Reason is required to submit a request.");
+    return;
+  }
+  
+  try {
+    const res = await fetch(`${API}/orders/${orderId}/return`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: cleanType === 'RETURN' ? 'Return' : 'Exchange', reason: reason.trim() })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast(`${cleanType === 'RETURN' ? 'Return' : 'Exchange'} requested successfully!`);
+      const localOrders = JSON.parse(localStorage.getItem('vg_orders') || '[]');
+      const idx = localOrders.findIndex(o => o.orderId === orderId);
+      if (idx !== -1) {
+        localOrders[idx].status = data.status;
+        localOrders[idx].trackingHistory = data.trackingHistory;
+        localStorage.setItem('vg_orders', JSON.stringify(localOrders));
+      }
+      loadOrders();
+    } else {
+      showToast(data.error || 'Failed to submit request.', 'error');
+    }
+  } catch (err) {
+    showToast('Server error. Failed to submit request.', 'error');
+  }
+}
+
+// ===== WISHLIST =====
+function loadWishlist() {
+  const wishlist = currentUser.wishlist || [];
+  document.getElementById('wishlist-count').textContent = wishlist.length;
+  document.getElementById('ov-wishlist').textContent = wishlist.length;
+
+  const container = document.getElementById('wishlist-container');
+  if (!wishlist.length) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <i class="fa-solid fa-heart"></i>
+        <h3>Wishlist is Empty</h3>
+        <p>Save items you love by clicking the heart icon on any product.</p>
+        <button class="empty-cta" onclick="window.location.href='index.html'"><i class="fa-solid fa-store"></i> Discover Products</button>
+      </div>`;
+    return;
+  }
+
+  const items = wishlist.map(id => {
+    const p = allProducts.find(x=>x.id===id);
+    if (!p) return '';
+    return `
+      <div class="wishlist-card">
+        <img src="${p.image}" alt="${p.title}" class="wishlist-img" onerror="this.src='${logoUrl}'">
+        <div class="wishlist-info">
+          <div class="wishlist-title">${p.title}</div>
+          <div class="wishlist-price">Rs. ${p.price.toLocaleString('en-IN')}</div>
+          <div class="wishlist-actions">
+            <button class="w-btn w-btn-gold" onclick="window.location.href='product.html?id=${id}'">View Product</button>
+            <button class="w-btn w-btn-ghost" onclick="removeWishlist('${id}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  container.innerHTML = items || `<div class="empty-state" style="grid-column:1/-1"><i class="fa-solid fa-heart"></i><p>No saved items found.</p></div>`;
+}
+
+async function removeWishlist(id) {
+  currentUser.wishlist = (currentUser.wishlist||[]).filter(w=>w!==id);
+  localStorage.setItem('vg_user', JSON.stringify(currentUser));
+  try {
+    await fetch(API+'/users/wishlist', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email: currentUser.email, wishlist: currentUser.wishlist })
+    });
+  } catch(e) {}
+  loadWishlist();
+  showToast('Removed from wishlist');
+}
+
+// ===== SAVED DESIGNS =====
+function loadDesigns() {
+  const designs = currentUser.savedDesigns || [];
+  document.getElementById('designs-count').textContent = designs.length;
+  document.getElementById('ov-designs').textContent = designs.length;
+
+  const container = document.getElementById('designs-container');
+  if (!designs.length) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <h3>No Saved Designs</h3>
+        <p>Design a custom resin piece and save it here to reorder any time.</p>
+        <button class="empty-cta" onclick="window.location.href='index.html'"><i class="fa-solid fa-paint-brush"></i> Start Designing</button>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = designs.map((d, i) => `
+    <div class="design-card">
+      <button class="design-delete" onclick="removeDesign(${i})"><i class="fa-solid fa-trash"></i></button>
+      <div class="design-tag"><i class="fa-solid fa-gem"></i> Custom Design</div>
+      <div class="design-product">${d.product || 'Custom Resin Item'}</div>
+      <div class="design-details">
+        ${d.letter ? `<strong>Letter:</strong> ${d.letter}<br>` : ''}
+        ${d.color ? `<strong>Color:</strong> ${d.color}<br>` : ''}
+        ${d.size ? `<strong>Size:</strong> ${d.size}<br>` : ''}
+        ${d.notes ? `<strong>Notes:</strong> ${d.notes}` : ''}
+      </div>
+      <div class="design-date"><i class="fa-regular fa-clock"></i> Saved ${d.date || 'recently'}</div>
+    </div>`).join('');
+}
+
+async function removeDesign(idx) {
+  currentUser.savedDesigns = (currentUser.savedDesigns||[]).filter((_,i)=>i!==idx);
+  localStorage.setItem('vg_user', JSON.stringify(currentUser));
+  try {
+    await fetch(API+'/users/saved-designs', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email: currentUser.email, savedDesigns: currentUser.savedDesigns })
+    });
+  } catch(e) {}
+  loadDesigns();
+  showToast('Design removed');
+}
+
+// ===== OVERVIEW STATS =====
+function updateOverviewStats() {
+  const orders = JSON.parse(localStorage.getItem('vg_orders') || '[]').filter(o => o.customerEmail === currentUser.email);
+  document.getElementById('ov-orders').textContent = orders.length;
+  document.getElementById('ov-delivered').textContent = orders.filter(o=>o.status==='Delivered').length;
+}
+
+// ===== PROFILE SAVE =====
+async function saveProfile(e) {
+  e.preventDefault();
+  currentUser.name = document.getElementById('p-name').value;
+  currentUser.phone = document.getElementById('p-phone').value;
+  currentUser.address = document.getElementById('p-address').value;
+  localStorage.setItem('vg_user', JSON.stringify(currentUser));
+
+  try {
+    await fetch(API+'/users/profile', {
+      method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        email: currentUser.email,
+        name: currentUser.name,
+        phone: currentUser.phone,
+        address: currentUser.address
+      })
+    });
+  } catch(e) {}
+
+  document.getElementById('dash-name').textContent = currentUser.name;
+  const initials = currentUser.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('dash-avatar').textContent = initials;
+  showToast('Profile updated successfully!');
+}
+
+// ===== SHOW TAB =====
+function showTab(name) {
+  document.querySelectorAll('.dash-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.dash-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  const btn = Array.from(document.querySelectorAll('.dash-nav-item')).find(n => n.getAttribute('onclick')?.includes(name));
+  if (btn) btn.classList.add('active');
+}
+
+// ===== LOGOUT =====
+function handleLogout() {
+  localStorage.removeItem('vg_user');
+  localStorage.removeItem('vg_admin_session');
+  window.location.reload();
+}
+
+function goToShop() {
+  window.location.href = 'index.html#shop';
+}
+
+// ===== INIT: CHECK EXISTING SESSION =====
+const savedUser = JSON.parse(localStorage.getItem('vg_user')||'null');
+if (savedUser && savedUser.email) {
+  currentUser = savedUser;
+  showDashboard();
+}
+</script>
+
+<!-- WhatsApp Float -->
+<div style="position:fixed; bottom:24px; right:24px; z-index:100; display:flex; align-items:center; gap:10px;">
+  <span style="background:#fff; padding:8px 14px; border-radius:20px; font-size:12px; box-shadow:0 4px 14px rgba(0,0,0,0.1); color:var(--text-primary);">Need help?</span>
+  <a href="https://wa.me/919228221331" target="_blank" style="width:48px; height:48px; background:#25d366; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; color:white; box-shadow:0 4px 14px rgba(37,211,102,0.4); text-decoration:none;">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+</div>
+
+</body>
+</html>

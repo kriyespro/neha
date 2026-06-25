@@ -1,0 +1,36 @@
+services:
+
+  # ── PostgreSQL ─────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: vibrantglaze
+      POSTGRES_USER: vg_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vg_user -d vibrantglaze"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── Flask App ──────────────────────────────────────────────────
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://vg_user:${DB_PASSWORD}@db:5432/vibrantglaze
+      SECRET_KEY: ${SECRET_KEY}
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      # Persist uploaded product images outside the container
+      - ./myapp/static/images:/app/myapp/static/images
+
+volumes:
+  pgdata:

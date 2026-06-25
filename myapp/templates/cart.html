@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Shopping Cart — VibrantGlaze</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body data-page="cart.html">
+
+<div class="cart-policy-bar">
+  <strong>No Cash on Delivery</strong> &nbsp;·&nbsp; Please make payment and confirm your order on WhatsApp &nbsp;·&nbsp; Free shipping above ₹999
+</div>
+
+<div id="site-header"></div>
+
+<main class="cart-page-main">
+  <div class="cart-page-shell">
+    <a href="shop.html" class="cart-continue-link"><i class="fa-solid fa-arrow-left"></i> Continue shopping</a>
+
+    <h1 class="cart-page-title">Your cart</h1>
+
+    <div class="cart-page-layout" id="cart-page-layout">
+      <div class="cart-page-items-col">
+        <div id="cart-page-empty" class="cart-page-empty" style="display:none">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <h2>Your cart is empty</h2>
+          <p>Add handcrafted resin pieces or jewellery to get started.</p>
+          <a href="shop.html" class="btn btn-primary">Start Shopping</a>
+        </div>
+
+        <div id="cart-page-content" style="display:none">
+          <div class="cart-table-wrap">
+            <div class="cart-table-head">
+              <span>Product</span>
+              <span class="cart-table-head-total">Total</span>
+            </div>
+            <div id="cart-page-items-list"></div>
+          </div>
+
+          <!-- NEW SUGGESTIONS SECTION -->
+          <div id="cart-page-suggestions-section" style="display:none; margin-top:30px; border-top:1px dashed rgba(197,168,128,0.2); padding-top:20px;">
+            <h3 style="font-size:16px; margin-bottom:14px; font-family:'Outfit',sans-serif; color:var(--text-secondary);"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--color-gold);"></i> You May Also Like</h3>
+            <div id="cart-page-suggestions-list" style="display:flex; gap:16px; overflow-x:auto; padding-bottom:12px;"></div>
+          </div>
+
+          <div class="cart-page-extras">
+            <div class="cart-page-extra-block">
+              <label class="cart-extra-label">Apply Coupon</label>
+              <div class="coupon-field-row">
+                <input type="text" id="cart-page-coupon-input" placeholder="FESTIVE15">
+                <button type="button" onclick="applyCartPageCoupon()">Apply</button>
+              </div>
+              <div id="cart-page-coupon-feedback" class="coupon-feedback"></div>
+            </div>
+
+            <div class="cart-page-extra-block">
+              <label class="checkbox-addon-container">
+                <input type="checkbox" id="cart-page-gift-toggle" onchange="updateCartPageTotals()">
+                <span class="addon-checkbox"></span>
+                <span class="addon-text">
+                  <strong>Premium Gift Packaging (+Rs. 50)</strong>
+                  <span class="addon-subtext">Luxury box, greeting card &amp; wax-seal wrap.</span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="cart-page-summary-col" id="cart-page-summary">
+        <div class="cart-summary-card">
+          <div class="cart-account-prompt" id="cart-account-prompt">
+            <h2>Have an account?</h2>
+            <p><a href="dashboard.html">Log in</a> to check out faster.</p>
+          </div>
+
+          <div class="cart-shipping-note">
+            <i class="fa-solid fa-truck"></i>
+            Taxes, discounts and <a href="#" onclick="openPolicy('shipping'); return false;">shipping</a> calculated at checkout.
+          </div>
+
+          <div class="cart-estimated-total">
+            <h2>Estimated total</h2>
+            <p class="cart-estimated-amount" id="cart-page-total">Rs. 0</p>
+          </div>
+
+          <div class="cart-summary-breakdown" id="cart-page-breakdown"></div>
+
+          <button type="button" class="btn btn-primary btn-full cart-checkout-btn" id="cart-checkout-btn" onclick="proceedToCheckout()">
+            Check out
+          </button>
+
+          <p class="cart-page-policy-note">
+            <i class="fa-brands fa-whatsapp"></i> Prepaid only — confirm payment on WhatsApp after checkout.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<div id="site-overlays"></div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+function onPageReady() {
+  renderCartPage();
+}
+
+function applyCartPageCoupon() {
+  const input = document.getElementById("cart-page-coupon-input");
+  const drawerInput = document.getElementById("coupon-input");
+  if (input && drawerInput) drawerInput.value = input.value;
+  applyCoupon();
+  const fb = document.getElementById("coupon-feedback");
+  const pageFb = document.getElementById("cart-page-coupon-feedback");
+  if (fb && pageFb) {
+    pageFb.textContent = fb.textContent;
+    pageFb.style.color = fb.style.color;
+  }
+  updateCartPageTotals();
+}
+</script>
+</body>
+</html>

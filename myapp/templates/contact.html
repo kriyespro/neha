@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — VibrantGlaze</title>
+  <meta name="description" content="Contact VibrantGlaze for custom orders, bulk enquiries, gifting ideas, or support. Reach us via WhatsApp, email or our contact form.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .contact-layout { display:grid; grid-template-columns:1fr 1.2fr; gap:48px; max-width:1100px; margin:0 auto; padding:56px 20px; align-items:start; }
+
+    /* --- Contact Info Side --- */
+    .contact-info-card { background:linear-gradient(135deg,#2c2724 0%,#3d3330 100%); border-radius:20px; padding:40px; color:#fff; position:sticky; top:90px; }
+    .contact-info-card h2 { font-size:24px; margin-bottom:8px; }
+    .contact-info-card > p { font-size:14px; color:rgba(255,255,255,0.6); margin-bottom:32px; line-height:1.8; }
+    .contact-info-item { display:flex; align-items:flex-start; gap:16px; margin-bottom:24px; }
+    .contact-info-icon { width:44px; height:44px; border-radius:12px; background:rgba(197,168,128,0.12); border:1px solid rgba(197,168,128,0.2); display:flex; align-items:center; justify-content:center; font-size:18px; color:var(--color-gold); flex-shrink:0; }
+    .contact-info-text h4 { font-size:13px; font-family:'Outfit',sans-serif; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.5); margin-bottom:4px; }
+    .contact-info-text p, .contact-info-text a { font-size:15px; color:#fff; text-decoration:none; line-height:1.6; }
+    .contact-info-text a:hover { color:var(--color-gold); }
+    .contact-hours { background:rgba(197,168,128,0.08); border:1px solid rgba(197,168,128,0.15); border-radius:12px; padding:16px 18px; margin-top:28px; }
+    .contact-hours h4 { font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--color-gold); margin-bottom:10px; }
+    .hours-row { display:flex; justify-content:space-between; font-size:13px; padding:5px 0; color:rgba(255,255,255,0.7); border-bottom:1px dashed rgba(255,255,255,0.06); }
+    .hours-row:last-child { border-bottom:none; }
+    .hours-row.today { color:#fff; font-weight:600; }
+    .hours-open { color:#4caf7d; font-weight:600; }
+    .contact-social { display:flex; gap:10px; margin-top:24px; }
+    .contact-social a { width:40px; height:40px; border-radius:10px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.7); font-size:16px; transition:all 0.2s; }
+    .contact-social a:hover { background:rgba(197,168,128,0.15); color:var(--color-gold); border-color:rgba(197,168,128,0.3); }
+
+    /* --- Contact Form Side --- */
+    .contact-form-panel { background:var(--bg-card); border-radius:20px; padding:40px; border:1px solid rgba(197,168,128,0.12); box-shadow:var(--shadow-subtle); }
+    .contact-form-panel h2 { font-size:22px; margin-bottom:6px; }
+    .contact-form-panel > p { font-size:14px; color:var(--text-secondary); margin-bottom:28px; }
+    .contact-tabs { display:flex; gap:0; margin-bottom:28px; border-bottom:2px solid rgba(197,168,128,0.1); }
+    .contact-tab { padding:10px 20px; font-size:13px; font-weight:600; cursor:pointer; color:var(--text-secondary); border:none; background:none; font-family:'Outfit',sans-serif; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all 0.2s; }
+    .contact-tab.active { color:var(--color-gold-dark); border-bottom-color:var(--color-gold); }
+    .contact-tab:hover { color:var(--text-primary); }
+    .contact-form-body { display:none; }
+    .contact-form-body.active { display:block; }
+    .cf-row { margin-bottom:18px; }
+    .cf-row label { display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-secondary); margin-bottom:7px; }
+    .cf-row input, .cf-row select, .cf-row textarea { width:100%; padding:11px 14px; border:1.5px solid rgba(197,168,128,0.2); border-radius:8px; font-size:14px; font-family:'Outfit',sans-serif; color:var(--text-primary); background:var(--bg-site); transition:all 0.2s; }
+    .cf-row input:focus, .cf-row select:focus, .cf-row textarea:focus { outline:none; border-color:var(--color-gold); background:#fff; box-shadow:0 0 0 3px rgba(197,168,128,0.1); }
+    .cf-row textarea { resize:vertical; }
+    .cf-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .cf-row.span-2 { grid-column:1/-1; }
+    .form-submit-btn { width:100%; padding:14px; background:var(--gold-gradient); border:none; border-radius:10px; color:#fff; font-size:15px; font-weight:700; font-family:'Outfit',sans-serif; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:10px; letter-spacing:0.5px; }
+    .form-submit-btn:hover { opacity:0.9; transform:translateY(-2px); box-shadow:0 6px 20px rgba(197,168,128,0.3); }
+    .form-submit-btn:active { transform:translateY(0); }
+    .form-success-msg { display:none; text-align:center; padding:40px 20px; }
+    .form-success-msg .success-icon { font-size:56px; color:#4caf7d; margin-bottom:16px; }
+    .form-success-msg h3 { font-size:20px; margin-bottom:8px; }
+    .form-success-msg p { font-size:14px; color:var(--text-secondary); margin-bottom:20px; }
+
+    /* Quick action cards */
+    .quick-contact-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; max-width:1100px; margin:0 auto; padding:0 20px 60px; }
+    .quick-contact-card { border-radius:14px; padding:24px; text-align:center; border:1px solid rgba(197,168,128,0.12); transition:all 0.2s; cursor:pointer; text-decoration:none; display:block; }
+    .quick-contact-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-medium); border-color:rgba(197,168,128,0.25); }
+    .quick-contact-card .qc-icon { font-size:28px; margin-bottom:12px; display:block; }
+    .quick-contact-card h3 { font-size:15px; margin-bottom:6px; }
+    .quick-contact-card p { font-size:12px; color:var(--text-secondary); }
+    .qc-whatsapp { background:rgba(37,211,102,0.06); }
+    .qc-instagram { background:rgba(131,58,180,0.06); }
+    .qc-email { background:rgba(197,168,128,0.06); }
+    .qc-phone { background:rgba(92,168,212,0.06); }
+
+    /* Map placeholder */
+    .map-section { background:linear-gradient(135deg,#f9f5ef,#f0e8da); padding:60px 20px; }
+    .map-placeholder { background:var(--bg-card); border-radius:16px; border:1px solid rgba(197,168,128,0.12); overflow:hidden; display:flex; flex-direction:column; max-width:900px; margin:0 auto; }
+    .map-embed { width:100%; height:280px; object-fit:cover; filter:sepia(0.2) brightness(0.95); }
+    .map-info-bar { padding:20px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    .map-address { font-size:14px; }
+    .map-address strong { display:block; font-size:15px; margin-bottom:2px; }
+    .map-address span { color:var(--text-secondary); font-size:13px; }
+    .map-open-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--gold-gradient); border-radius:8px; color:#fff; font-size:13px; font-weight:600; text-decoration:none; }
+
+    @media(max-width:768px) {
+      .contact-layout { grid-template-columns:1fr; }
+      .contact-info-card { position:static; }
+      .cf-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body data-page="contact.html">
+<div id="site-header"></div>
+
+<main>
+
+  <!-- HERO -->
+  <div style="background:linear-gradient(135deg,#f9f5ef,#f0e8da);padding:40px 20px;text-align:center;border-bottom:1px solid rgba(197,168,128,0.12)">
+    <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--color-gold-dark);font-weight:600">Get in Touch</span>
+    <h1 style="font-size:32px;margin:8px 0">We'd Love to Hear From You</h1>
+    <p style="color:var(--text-secondary);max-width:520px;margin:0 auto">Have a custom order idea, bulk gifting request, or just want to say hello? Our team is here and happy to help.</p>
+  </div>
+
+  <!-- QUICK CONTACT CARDS -->
+  <div style="max-width:1100px;margin:0 auto;padding:32px 20px 0">
+    <div class="quick-contact-grid">
+      <a href="https://wa.me/919228221331?text=Hi VibrantGlaze! I'd like to enquire about..." target="_blank" class="quick-contact-card qc-whatsapp">
+        <span class="qc-icon"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i></span>
+        <h3>WhatsApp</h3>
+        <p>Fastest response — usually within 30 minutes during business hours</p>
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:#25d366">+91 9228221331</div>
+      </a>
+      <a href="https://instagram.com" target="_blank" class="quick-contact-card qc-instagram">
+        <span class="qc-icon"><i class="fa-brands fa-instagram" style="color:#e1306c"></i></span>
+        <h3>Instagram DM</h3>
+        <p>Follow us for new drops, behind-the-scenes resin pours, and DM for custom orders</p>
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:#e1306c">@vibrantglaze</div>
+      </a>
+      <a href="mailto:nehatosawad@gmail.com" class="quick-contact-card qc-email">
+        <span class="qc-icon"><i class="fa-solid fa-envelope" style="color:var(--color-gold-dark)"></i></span>
+        <h3>Email</h3>
+        <p>Send detailed enquiries, bulk order requests, or photo references for customization</p>
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--color-gold-dark)">nehatosawad@gmail.com</div>
+      </a>
+      <a href="tel:+919228221331" class="quick-contact-card qc-phone">
+        <span class="qc-icon"><i class="fa-solid fa-phone-volume" style="color:#5ca8d4"></i></span>
+        <h3>Phone Call</h3>
+        <p>Available Mon–Sat, 10 AM to 7 PM. For urgent queries only.</p>
+        <div style="margin-top:10px;font-size:13px;font-weight:600;color:#5ca8d4">+91 9228221331</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT: INFO + FORM -->
+  <div class="contact-layout">
+
+    <!-- LEFT: INFO CARD -->
+    <div class="contact-info-card">
+      <h2>Contact Information</h2>
+      <p>Reach out any time — we genuinely enjoy talking about resin, jewellery design, and helping you find the perfect gift.</p>
+
+      <div class="contact-info-item">
+        <div class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="contact-info-text">
+          <h4>Studio Address</h4>
+          <p>Mansarovar Society, Godadara,<br>Surat, Gujarat — 395012<br><span style="font-size:13px;color:rgba(255,255,255,0.5)">Home studio &amp; dispatch centre</span></p>
+        </div>
+      </div>
+
+      <div class="contact-info-item">
+        <div class="contact-info-icon"><i class="fa-brands fa-whatsapp"></i></div>
+        <div class="contact-info-text">
+          <h4>WhatsApp &amp; Phone</h4>
+          <a href="https://wa.me/919228221331" target="_blank">+91 9228221331</a>
+        </div>
+      </div>
+
+      <div class="contact-info-item">
+        <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div class="contact-info-text">
+          <h4>Email</h4>
+          <a href="mailto:nehatosawad@gmail.com">nehatosawad@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="contact-hours">
+        <h4><i class="fa-regular fa-clock"></i> Business Hours</h4>
+        <div class="hours-row today"><span>Mon – Fri</span><span class="hours-open">10:00 AM – 7:00 PM</span></div>
+        <div class="hours-row today"><span>Saturday</span><span class="hours-open">10:00 AM – 5:00 PM</span></div>
+        <div class="hours-row"><span>Sunday</span><span style="color:rgba(255,255,255,0.4)">Closed</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:10px">WhatsApp responses may occur outside business hours.</div>
+      </div>
+
+      <div class="contact-social">
+        <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://pinterest.com" target="_blank" title="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+        <a href="https://wa.me/919228221331" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="mailto:nehatosawad@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+
+    <!-- RIGHT: FORM -->
+    <div class="contact-form-panel">
+      <h2>Send Us a Message</h2>
+      <p>Fill in the form below and we'll get back to you within one business day.</p>
+
+      <div class="contact-tabs">
+        <button class="contact-tab active" onclick="switchFormTab('general')">General Enquiry</button>
+        <button class="contact-tab" onclick="switchFormTab('custom')">Custom Order</button>
+        <button class="contact-tab" onclick="switchFormTab('bulk')">Bulk / Corporate</button>
+        <button class="contact-tab" onclick="switchFormTab('support')">Order Support</button>
+      </div>
+
+      <!-- GENERAL -->
+      <div class="contact-form-body active" id="form-general">
+        <form onsubmit="submitContactForm(event,'general')">
+          <div class="cf-grid">
+            <div class="cf-row"><label>Full Name *</label><input type="text" id="g-name" required placeholder="Alex Sharma"></div>
+            <div class="cf-row"><label>Email *</label><input type="email" id="g-email" required placeholder="you@example.com"></div>
+            <div class="cf-row span-2"><label>Subject *</label><input type="text" id="g-subject" required placeholder="e.g. Enquiring about custom resin coasters"></div>
+            <div class="cf-row span-2"><label>Message *</label><textarea id="g-message" rows="5" required placeholder="Tell us what you're looking for, any design ideas, or general questions..."></textarea></div>
+          </div>
+          <button type="submit" class="form-submit-btn"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+        </form>
+        <div class="form-success-msg" id="success-general">
+          <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <h3>Message Sent!</h3>
+          <p>Thank you for reaching out! We'll reply to your email within one business day. You can also WhatsApp us for a faster response.</p>
+          <a href="https://wa.me/919228221331" target="_blank" class="btn btn-primary" style="display:inline-flex;gap:8px"><i class="fa-brands fa-whatsapp"></i> WhatsApp Us</a>
+        </div>
+      </div>
+
+      <!-- CUSTOM ORDER -->
+      <div class="contact-form-body" id="form-custom">
+        <form onsubmit="submitContactForm(event,'custom')">
+          <div class="cf-grid">
+            <div class="cf-row"><label>Full Name *</label><input type="text" id="co-name" required placeholder="Your name"></div>
+            <div class="cf-row"><label>WhatsApp Number *</label><input type="tel" id="co-phone" required placeholder="+91 8573XXXX"></div>
+            <div class="cf-row"><label>Product Type *</label>
+              <select id="co-product" required>
+                <option value="">Choose...</option>
+                <option>Resin Keychain (Letter Initial)</option>
+                <option>Resin Pendant / Necklace</option>
+                <option>Resin Bookmark</option>
+                <option>Resin Coaster Set</option>
+                <option>Resin Bangle / Bracelet</option>
+                <option>Photo Resin Art</option>
+                <option>Other / Custom Idea</option>
+              </select>
+            </div>
+            <div class="cf-row"><label>Budget Range (Rs.)</label>
+              <select id="co-budget">
+                <option>Under Rs. 500</option>
+                <option>Rs. 500 – 1000</option>
+                <option>Rs. 1000 – 2000</option>
+                <option>Rs. 2000+</option>
+              </select>
+            </div>
+            <div class="cf-row span-2"><label>Custom Requirements *</label><textarea id="co-details" rows="4" required placeholder="e.g. Letter 'N' keychain in violet & gold with dried rose petals. Need by 15th June for birthday gift."></textarea></div>
+            <div class="cf-row span-2"><label>Color Reference / Inspiration</label><input type="text" id="co-color" placeholder="e.g. Pastel pink + gold, or ocean blue + white"></div>
+          </div>
+          <button type="submit" class="form-submit-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Request Custom Order</button>
+        </form>
+        <div class="form-success-msg" id="success-custom">
+          <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <h3>Custom Request Received!</h3>
+          <p>We'll review your requirements and reach out on WhatsApp to confirm feasibility, pricing, and timeline within 4 business hours.</p>
+          <a href="https://wa.me/919228221331" target="_blank" class="btn btn-primary" style="display:inline-flex;gap:8px"><i class="fa-brands fa-whatsapp"></i> Follow up on WhatsApp</a>
+        </div>
+      </div>
+
+      <!-- BULK -->
+      <div class="contact-form-body" id="form-bulk">
+        <form onsubmit="submitContactForm(event,'bulk')">
+          <div class="cf-grid">
+            <div class="cf-row"><label>Contact Name *</label><input type="text" id="bl-name" required placeholder="Your name"></div>
+            <div class="cf-row"><label>Company / Organization</label><input type="text" id="bl-company" placeholder="e.g. Sharma Textiles Pvt. Ltd."></div>
+            <div class="cf-row"><label>Email *</label><input type="email" id="bl-email" required placeholder="work@company.com"></div>
+            <div class="cf-row"><label>Phone / WhatsApp *</label><input type="tel" id="bl-phone" required placeholder="+91 8573XXXX"></div>
+            <div class="cf-row"><label>Approximate Quantity *</label><input type="number" id="bl-qty" required min="10" placeholder="Minimum 10 units"></div>
+            <div class="cf-row"><label>Occasion / Purpose</label>
+              <select id="bl-purpose">
+                <option>Corporate Gifting</option>
+                <option>Wedding Favours</option>
+                <option>Festival Gifting</option>
+                <option>Promotional Campaign</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="cf-row span-2"><label>Product &amp; Customization Details *</label><textarea id="bl-details" rows="4" required placeholder="e.g. 50 keychains with company logo letter, in gold & maroon. For Diwali gifting campaign."></textarea></div>
+          </div>
+          <button type="submit" class="form-submit-btn"><i class="fa-solid fa-boxes-stacked"></i> Submit Bulk Enquiry</button>
+        </form>
+        <div class="form-success-msg" id="success-bulk">
+          <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <h3>Bulk Enquiry Submitted!</h3>
+          <p>Our team will send you a custom pricing sheet and timeline proposal within 24 business hours. For Diwali / festive orders, please enquire at least 4 weeks in advance.</p>
+        </div>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="contact-form-body" id="form-support">
+        <form onsubmit="submitContactForm(event,'support')">
+          <div class="cf-grid">
+            <div class="cf-row"><label>Your Name *</label><input type="text" id="sp-name" required placeholder="Your name"></div>
+            <div class="cf-row"><label>Order ID *</label><input type="text" id="sp-orderid" required placeholder="e.g. VG20241203"></div>
+            <div class="cf-row"><label>Email Used for Order *</label><input type="email" id="sp-email" required placeholder="email@used.com"></div>
+            <div class="cf-row"><label>Issue Type *</label>
+              <select id="sp-issue" required>
+                <option value="">Select issue...</option>
+                <option>Damaged Product Received</option>
+                <option>Wrong Product Received</option>
+                <option>Delivery Delay</option>
+                <option>Tracking Not Updated</option>
+                <option>Quality Issue</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="cf-row span-2"><label>Describe Your Issue *</label><textarea id="sp-details" rows="4" required placeholder="Please describe the issue in detail. If product is damaged, mention what was broken and when it was received."></textarea></div>
+            <div class="cf-row span-2">
+              <p style="font-size:13px;background:rgba(232,185,79,0.08);border:1px solid rgba(232,185,79,0.2);border-radius:8px;padding:12px 14px;color:var(--text-secondary)">
+                <i class="fa-solid fa-triangle-exclamation" style="color:#e8b94f"></i>
+                For damaged product claims, you must share an unboxing video within 24 hours of delivery to our WhatsApp (+91 9228221331) alongside this form submission.
+              </p>
+            </div>
+          </div>
+          <button type="submit" class="form-submit-btn"><i class="fa-solid fa-headset"></i> Submit Support Request</button>
+        </form>
+        <div class="form-success-msg" id="success-support">
+          <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <h3>Support Ticket Created!</h3>
+          <p>We'll investigate your issue and reach out within 4 business hours. Please share your unboxing video on WhatsApp if applicable.</p>
+          <a href="https://wa.me/919228221331" target="_blank" class="btn btn-primary" style="display:inline-flex;gap:8px"><i class="fa-brands fa-whatsapp"></i> Share Video on WhatsApp</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAP / LOCATION -->
+  <div class="map-section">
+    <div style="text-align:center;margin-bottom:24px">
+      <h2 class="section-title">Visit Our Studio</h2>
+      <p class="section-subtitle">Custom design consultations available by appointment — contact us to schedule a visit.</p>
+    </div>
+    <div class="map-placeholder">
+      <img src="https://maps.googleapis.com/maps/api/staticmap?center=Godadara,Surat,Gujarat&zoom=14&size=900x280&style=feature:all|saturation:-30&style=feature:road|color:0xf5efe8&markers=color:0xc5a880|Godadara,Surat&key=NOKEY" alt="Location Map" class="map-embed" onerror="this.style.height='140px';this.style.background='linear-gradient(135deg,#f0e8da,#e8dace)';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center';this.alt='Map - Godadara, Surat, Gujarat'">
+      <div class="map-info-bar">
+        <div class="map-address">
+          <strong><i class="fa-solid fa-location-dot" style="color:var(--color-gold)"></i> VibrantGlaze Studio</strong>
+          <span>Mansarovar Society, Godadara, Surat, Gujarat — 395012, India</span>
+        </div>
+        <a href="https://maps.google.com/?q=Godadara,Surat,Gujarat" target="_blank" class="map-open-btn">
+          <i class="fa-solid fa-map-location-dot"></i> Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ MINI SECTION -->
+  <div style="background:var(--bg-card);border-top:1px solid rgba(197,168,128,0.1);padding:60px 20px">
+    <div style="max-width:700px;margin:0 auto;text-align:center">
+      <h2 class="section-title" style="margin-bottom:8px">Before You Write In...</h2>
+      <p style="color:var(--text-secondary);margin-bottom:28px">Many questions are already answered in our detailed FAQ section.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:24px">
+        <a href="faqs.html#section-shipping" style="padding:9px 18px;border:1px solid rgba(197,168,128,0.25);border-radius:20px;font-size:13px;color:var(--color-gold-dark)">Delivery Timelines</a>
+        <a href="faqs.html#section-policy" style="padding:9px 18px;border:1px solid rgba(197,168,128,0.25);border-radius:20px;font-size:13px;color:var(--color-gold-dark)">Return Policy</a>
+        <a href="faqs.html#section-customization" style="padding:9px 18px;border:1px solid rgba(197,168,128,0.25);border-radius:20px;font-size:13px;color:var(--color-gold-dark)">Customization</a>
+        <a href="faqs.html#section-care" style="padding:9px 18px;border:1px solid rgba(197,168,128,0.25);border-radius:20px;font-size:13px;color:var(--color-gold-dark)">Resin Care</a>
+        <a href="faqs.html#section-payment" style="padding:9px 18px;border:1px solid rgba(197,168,128,0.25);border-radius:20px;font-size:13px;color:var(--color-gold-dark)">Payment Methods</a>
+      </div>
+      <a href="faqs.html" class="btn btn-secondary"><i class="fa-solid fa-circle-question"></i> View All FAQs</a>
+    </div>
+  </div>
+
+</main>
+
+<div id="site-footer"></div>
+<div id="site-overlays"></div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+function switchFormTab(id) {
+  document.querySelectorAll(".contact-tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".contact-form-body").forEach(f => f.classList.remove("active"));
+  const btn = Array.from(document.querySelectorAll(".contact-tab")).find(t => t.getAttribute("onclick")?.includes(id));
+  if (btn) btn.classList.add("active");
+  document.getElementById("form-" + id).classList.add("active");
+}
+
+async function submitContactForm(e, type) {
+  e.preventDefault();
+  const btn = e.target.querySelector("button[type=submit]");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+  // Collect form data
+  let data = { type, timestamp: new Date().toISOString() };
+  if (type === "general") {
+    data = { ...data, name: document.getElementById("g-name").value, email: document.getElementById("g-email").value, subject: document.getElementById("g-subject").value, message: document.getElementById("g-message").value };
+  } else if (type === "custom") {
+    data = { ...data, name: document.getElementById("co-name").value, phone: document.getElementById("co-phone").value, product: document.getElementById("co-product").value, budget: document.getElementById("co-budget").value, details: document.getElementById("co-details").value, color: document.getElementById("co-color").value };
+  } else if (type === "bulk") {
+    data = { ...data, name: document.getElementById("bl-name").value, company: document.getElementById("bl-company").value, email: document.getElementById("bl-email").value, phone: document.getElementById("bl-phone").value, qty: document.getElementById("bl-qty").value, purpose: document.getElementById("bl-purpose").value, details: document.getElementById("bl-details").value };
+  } else if (type === "support") {
+    data = { ...data, name: document.getElementById("sp-name").value, orderId: document.getElementById("sp-orderid").value, email: document.getElementById("sp-email").value, issue: document.getElementById("sp-issue").value, details: document.getElementById("sp-details").value };
+  }
+
+  try {
+    await apiCall("/contact", "POST", data);
+  } catch(err) {
+    // Store locally even if API fails
+    const msgs = JSON.parse(localStorage.getItem("vg_contact_msgs") || "[]");
+    msgs.push(data);
+    localStorage.setItem("vg_contact_msgs", JSON.stringify(msgs));
+  }
+
+  // Show success
+  e.target.style.display = "none";
+  document.getElementById("success-" + type).style.display = "block";
+  showToast("Message sent! We'll be in touch soon.");
+}
+
+function onPageReady() {
+  // Pre-fill from URL params
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("tab")) switchFormTab(params.get("tab"));
+  if (params.get("order")) {
+    switchFormTab("support");
+    const el = document.getElementById("sp-orderid");
+    if (el) el.value = params.get("order");
+  }
+}
+</script>
+</body>
+</html>

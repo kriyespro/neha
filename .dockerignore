@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Database files (use PostgreSQL in Docker)
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+
+# Environment secrets
+.env
+
+# Dev / IDE
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Docs & test output
+*.log
+netstat.txt
+
+# Source zip
+*.zip
+
+# Git
+.git/
+.gitignore

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product — VibrantGlaze</title>
+  <meta name="description" content="View full product details — VibrantGlaze handcrafted resin art & imitation jewellery.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ===== PAGE LAYOUT ===== */
+    .pd-page { max-width: 1200px; margin: 0 auto; padding: 36px 20px 80px; }
+
+    /* ===== BREADCRUMB ===== */
+    .pd-breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-secondary);
+      margin-bottom: 28px; flex-wrap: wrap;
+    }
+    .pd-breadcrumb a { color: var(--color-gold-dark); text-decoration: none; }
+    .pd-breadcrumb a:hover { text-decoration: underline; }
+    .pd-breadcrumb i { font-size: 10px; opacity: 0.5; }
+
+    /* ===== MAIN PRODUCT GRID ===== */
+    .pd-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 52px;
+      align-items: start;
+    }
+
+    /* ===== IMAGE PANEL ===== */
+    .pd-image-panel { position: sticky; top: 100px; }
+    .pd-main-img-wrap {
+      width: 100%; aspect-ratio: 1/1;
+      background: #f5efe8;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(197,168,128,0.18);
+      box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+      position: relative;
+    }
+    .pd-main-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.25,0.8,0.25,1);
+    }
+    .pd-main-img-wrap:hover .pd-main-img { transform: scale(1.04); }
+    .pd-badge-overlay {
+      position: absolute; top: 18px; left: 18px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .pd-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .pd-badge-custom { background: var(--resin-gradient); color: #fff; }
+    .pd-badge-ready  { background: rgba(197,168,128,0.18); color: var(--color-gold-dark); border: 1px solid rgba(197,168,128,0.3); }
+
+    /* ===== INFO PANEL ===== */
+    .pd-info-panel { padding: 4px 0; }
+    .pd-category-pill {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--color-gold-dark);
+      display: inline-block; margin-bottom: 12px;
+    }
+    .pd-title {
+      font-size: 30px; font-family: 'Cinzel', serif;
+      color: var(--text-primary); line-height: 1.25;
+      margin-bottom: 14px; font-weight: 700;
+    }
+    .pd-rating-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .pd-stars { color: #f0ad4e; font-size: 17px; letter-spacing: 1px; }
+    .pd-rating-val { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .pd-rating-count { font-size: 13px; color: var(--text-secondary); }
+    .pd-price-block { margin-bottom: 22px; }
+    .pd-price {
+      font-size: 34px; font-weight: 800;
+      color: var(--color-gold-dark);
+      font-family: 'Outfit', sans-serif;
+    }
+    .pd-price-note {
+      font-size: 12px; color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    .pd-divider { height: 1px; background: rgba(197,168,128,0.15); margin: 22px 0; }
+
+    .pd-description {
+      font-size: 15px; color: var(--text-secondary);
+      line-height: 1.85; margin-bottom: 24px;
+    }
+
+    /* ===== SIZE PICKER ===== */
+    .pd-section-label {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--text-secondary);
+      margin-bottom: 10px; display: block;
+    }
+    .pd-sizes { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+    .pd-size-btn {
+      padding: 10px 20px;
+      border: 1.5px solid rgba(197,168,128,0.3);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-primary);
+      transition: all 0.2s;
+      line-height: 1.3;
+    }
+    .pd-size-btn:hover { border-color: var(--color-gold); background: rgba(197,168,128,0.08); }
+    .pd-size-btn.active {
+      border-color: var(--color-gold-dark);
+      background: rgba(197,168,128,0.15);
+      color: var(--color-gold-dark);
+      font-weight: 700;
+    }
+
+    /* ===== CUSTOMIZATION BOX ===== */
+    .pd-custom-box {
+      background: rgba(197,168,128,0.06);
+      border: 1.5px dashed rgba(197,168,128,0.35);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 22px;
+    }
+    .pd-custom-box-title {
+      font-size: 13px; font-weight: 700;
+      color: var(--color-gold-dark);
+      margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .pd-custom-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid rgba(197,168,128,0.25);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-primary);
+      background: var(--bg-card);
+      transition: all 0.2s;
+    }
+    .pd-custom-input:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(197,168,128,0.1); }
+
+    /* ===== QTY + ACTIONS ===== */
+    .pd-action-row {
+      display: flex; align-items: stretch; gap: 12px;
+      flex-wrap: wrap; margin-bottom: 18px;
+    }
+    .pd-qty {
+      display: flex; align-items: center;
+      border: 1.5px solid rgba(197,168,128,0.3);
+      border-radius: 10px; overflow: hidden; height: 52px;
+    }
+    .pd-qty-btn {
+      background: none; border: none;
+      padding: 0 18px; height: 52px; font-size: 22px;
+      color: var(--color-gold-dark); cursor: pointer;
+      transition: background 0.2s;
+    }
+    .pd-qty-btn:hover { background: rgba(197,168,128,0.1); }
+    .pd-qty-val {
+      min-width: 44px; text-align: center;
+      font-size: 16px; font-weight: 700;
+      border-left: 1px solid rgba(197,168,128,0.2);
+      border-right: 1px solid rgba(197,168,128,0.2);
+      line-height: 52px; height: 52px;
+    }
+    .pd-add-btn {
+      flex: 1; height: 52px; min-width: 160px;
+      background: var(--gold-gradient);
+      color: #fff; border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: all 0.3s; box-shadow: 0 6px 20px rgba(160,120,64,0.3);
+    }
+    .pd-add-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(160,120,64,0.4); filter: brightness(1.06); }
+    .pd-wish-btn {
+      width: 52px; height: 52px;
+      border: 1.5px solid rgba(197,168,128,0.3);
+      border-radius: 10px; background: transparent;
+      color: var(--text-secondary); cursor: pointer;
+      font-size: 18px; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .pd-wish-btn:hover { border-color: #e05c5c; color: #e05c5c; background: rgba(224,92,92,0.06); }
+    .pd-wish-btn.active { border-color: #e05c5c; color: #e05c5c; background: rgba(224,92,92,0.08); }
+
+    /* ===== DELIVERY CHIPS ===== */
+    .pd-delivery-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+    .pd-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 14px; border-radius: 20px;
+      background: rgba(197,168,128,0.08);
+      border: 1px solid rgba(197,168,128,0.18);
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .pd-chip i { color: var(--color-gold-dark); font-size: 13px; }
+
+    /* ===== META INFO ===== */
+    .pd-meta-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px 24px; margin-bottom: 10px;
+    }
+    .pd-meta-row { font-size: 13px; color: var(--text-secondary); }
+    .pd-meta-row strong { color: var(--text-primary); font-weight: 600; }
+
+    /* ===== REVIEWS SECTION ===== */
+    .pd-reviews-section { margin-top: 60px; }
+    .pd-reviews-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px; padding-bottom: 18px;
+      border-bottom: 1px solid rgba(197,168,128,0.15);
+    }
+    .pd-reviews-header h2 { font-size: 22px; }
+    .pd-avg-rating {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .pd-avg-num {
+      font-size: 48px; font-weight: 800;
+      color: var(--text-primary); line-height: 1;
+      font-family: 'Outfit', sans-serif;
+    }
+    .pd-avg-stars { color: #f0ad4e; font-size: 22px; letter-spacing: 2px; }
+    .pd-avg-count { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+
+    .pd-reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+    .pd-review-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(197,168,128,0.12);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: var(--shadow-subtle);
+      transition: all 0.3s;
+    }
+    .pd-review-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-medium); }
+    .pd-review-stars { color: #f0ad4e; font-size: 16px; margin-bottom: 10px; }
+    .pd-review-text {
+      font-size: 14px; color: var(--text-secondary);
+      line-height: 1.7; font-style: italic; margin-bottom: 16px;
+    }
+    .pd-review-author {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .pd-review-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--gold-gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .pd-review-author-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .pd-review-author-date { font-size: 12px; color: var(--text-secondary); }
+    .pd-review-photo {
+      width: 100%; border-radius: 10px; margin-top: 14px;
+      max-height: 200px; object-fit: cover;
+      border: 1px solid rgba(197,168,128,0.15);
+    }
+
+    /* ===== RELATED PRODUCTS ===== */
+    .pd-related-section { margin-top: 70px; }
+    .pd-related-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .pd-related-header h2 { font-size: 22px; }
+
+    /* ===== NOT FOUND ===== */
+    .pd-not-found {
+      text-align: center; padding: 100px 20px;
+      color: var(--text-secondary);
+    }
+    .pd-not-found i { font-size: 64px; opacity: 0.15; margin-bottom: 20px; display: block; }
+    .pd-not-found h2 { font-size: 24px; color: var(--text-primary); margin-bottom: 10px; }
+
+    /* ===== SKELETON LOADER ===== */
+    .skeleton {
+      background: linear-gradient(90deg, #e8e4df 25%, #f0ece8 50%, #e8e4df 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    /* ===== WHATSAPP CTA ===== */
+    .pd-whatsapp-cta {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 18px;
+      background: rgba(37,211,102,0.08);
+      border: 1px solid rgba(37,211,102,0.2);
+      border-radius: 12px;
+      margin-top: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .pd-whatsapp-cta:hover { background: rgba(37,211,102,0.14); }
+    .pd-whatsapp-cta i { font-size: 22px; color: #25d366; flex-shrink: 0; }
+    .pd-whatsapp-cta span { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+    .pd-whatsapp-cta strong { color: #25d366; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .pd-grid { grid-template-columns: 1fr; gap: 32px; }
+      .pd-image-panel { position: static; }
+      .pd-title { font-size: 24px; }
+      .pd-price { font-size: 28px; }
+      .pd-meta-grid { grid-template-columns: 1fr; }
+      .pd-reviews-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+    @media (max-width: 600px) {
+      .pd-page { padding: 20px 14px 60px; }
+      .pd-add-btn { min-width: 120px; font-size: 13px; }
+      .pd-reviews-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="product.html">
+
+<div id="site-header"></div>
+
+<main>
+  <div class="pd-page" id="pd-page-root">
+    <!-- Skeleton while loading -->
+    <div id="pd-skeleton" style="display:block">
+      <div class="skeleton" style="height:20px;width:220px;margin-bottom:32px"></div>
+      <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:52px">
+        <div class="skeleton" style="aspect-ratio:1/1;border-radius:20px"></div>
+        <div>
+          <div class="skeleton" style="height:14px;width:80px;margin-bottom:14px"></div>
+          <div class="skeleton" style="height:36px;margin-bottom:14px"></div>
+          <div class="skeleton" style="height:18px;width:160px;margin-bottom:24px"></div>
+          <div class="skeleton" style="height:42px;width:120px;margin-bottom:32px"></div>
+          <div class="skeleton" style="height:100px;margin-bottom:20px"></div>
+          <div style="display:flex;gap:10px">
+            <div class="skeleton" style="height:52px;flex:1"></div>
+            <div class="skeleton" style="height:52px;width:52px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actual content -->
+    <div id="pd-content" style="display:none"></div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<div id="site-overlays"></div>
+
+<script src="shared.js"></script>
+<script>
+let pdProductId = null;
+let pdSelectedSize = null;
+let pdQty = 1;
+
+function onPageReady() {
+  const params = new URLSearchParams(window.location.search);
+  pdProductId = params.get('id');
+  if (!pdProductId) {
+    showNotFound('No product ID specified.');
+    return;
+  }
+  renderProductDetail();
+}
+
+function renderProductDetail() {
+  const p = VG.products.find(x => x.id === pdProductId);
+  if (!p) {
+    showNotFound(`Product "${pdProductId}" not found.`);
+    return;
+  }
+
+  pdSelectedSize = p.sizes?.[0] || 'Standard';
+  pdQty = 1;
+
+  // Update page title & meta
+  document.title = `${p.title} — VibrantGlaze`;
+  document.querySelector('meta[name="description"]').content = p.description;
+
+  const stars = '★'.repeat(Math.round(p.rating)) + '☆'.repeat(5 - Math.round(p.rating));
+  const reviewCount = (p.reviews || []).length;
+
+  // Related products (same category, different id)
+  const related = VG.products.filter(x => x.category === p.category && x.id !== p.id).slice(0, 4);
+
+  const isWishlisted = VG.user && (VG.user.wishlist || []).includes(p.id);
+
+  const html = `
+    <!-- BREADCRUMB -->
+    <nav class="pd-breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <a href="shop.html">Shop</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <a href="shop.html?cat=${encodeURIComponent(p.category)}">${p.category}</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span>${p.title}</span>
+    </nav>
+
+    <!-- MAIN PRODUCT GRID -->
+    <div class="pd-grid">
+
+      <!-- LEFT: IMAGE -->
+      <div class="pd-image-panel">
+        <div class="pd-main-img-wrap">
+          <img src="${p.image}" alt="${p.title}" class="pd-main-img" id="pd-main-img" onerror="this.src='logo.jpg'">
+          <div class="pd-badge-overlay">
+            ${p.isCustomizable
+              ? '<span class="pd-badge pd-badge-custom"><i class="fa-solid fa-wand-magic-sparkles"></i> Customizable</span>'
+              : '<span class="pd-badge pd-badge-ready"><i class="fa-solid fa-check"></i> Readymade</span>'
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: INFO -->
+      <div class="pd-info-panel">
+        <span class="pd-category-pill">${p.category}</span>
+        <h1 class="pd-title">${p.title}</h1>
+
+        <div class="pd-rating-row">
+          <span class="pd-stars">${stars}</span>
+          <span class="pd-rating-val">${p.rating}</span>
+          <span class="pd-rating-count">(${reviewCount} review${reviewCount !== 1 ? 's' : ''})</span>
+        </div>
+
+        <div class="pd-price-block">
+          <div class="pd-price" id="pd-price-display">Rs. ${p.price.toLocaleString('en-IN')}</div>
+          <div class="pd-price-note"><i class="fa-solid fa-tag" style="color:var(--color-gold);margin-right:5px"></i>Inclusive of all taxes · Prepaid only</div>
+        </div>
+
+        <div class="pd-divider"></div>
+
+        <p class="pd-description">${p.description}</p>
+
+        ${p.isCustomizable ? `
+        <div class="pd-custom-box">
+          <div class="pd-custom-box-title">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Personalize Your Order
+          </div>
+          <input type="text" class="pd-custom-input" id="pd-custom-text"
+            placeholder="e.g. Letter 'N', Name 'Neha', 'Happy Birthday Priya'" maxlength="80">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; gap: 10px; flex-wrap: wrap;">
+            <span style="font-size:11px;color:var(--text-secondary);"><i class="fa-solid fa-circle-info"></i> Leave blank for standard design</span>
+            <button type="button" class="btn btn-secondary" style="padding:8px 16px; font-size:12px; font-weight: 600; font-family:'Outfit',sans-serif; cursor:pointer; display:flex; align-items:center; gap:6px; background: transparent; border: 1.5px solid rgba(197,168,128,0.4); border-radius: 8px; color: var(--color-gold-dark); transition: all 0.2s;" onmouseover="this.style.background='rgba(197,168,128,0.1)'" onmouseout="this.style.background='transparent'" onclick="pdSaveDesign()">
+              <i class="fa-solid fa-floppy-disk"></i> Save Design
+            </button>
+          </div>
+        </div>` : ''}
+
+        <!-- SIZE PICKER -->
+        ${p.sizes && p.sizes.length > 1 ? `
+        <label class="pd-section-label">Select Size / Variant</label>
+        <div class="pd-sizes" id="pd-sizes">
+          ${p.sizes.map(s => {
+            const extra = p.sizePrices?.[s] || 0;
+            return `<button class="pd-size-btn${s === pdSelectedSize ? ' active' : ''}" onclick="pdSelectSize('${s}')">${s}${extra ? ` <br><small style='color:var(--color-gold-dark)'>+Rs. ${extra}</small>` : ''}</button>`;
+          }).join('')}
+        </div>` : ''}
+
+        <!-- QTY + ADD TO CART -->
+        <div class="pd-action-row">
+          <div class="pd-qty">
+            <button class="pd-qty-btn" onclick="pdChangeQty(-1)" aria-label="Decrease quantity">−</button>
+            <span class="pd-qty-val" id="pd-qty-val">1</span>
+            <button class="pd-qty-btn" onclick="pdChangeQty(1)" aria-label="Increase quantity">+</button>
+          </div>
+          <button class="pd-add-btn" id="pd-add-btn" onclick="pdAddToCart()">
+            <i class="fa-solid fa-bag-shopping"></i> Add to Bag
+          </button>
+          <button class="pd-wish-btn${isWishlisted ? ' active' : ''}" id="pd-wish-btn" onclick="pdToggleWishlist()" title="Add to Wishlist" aria-label="Wishlist">
+            <i class="fa-${isWishlisted ? 'solid' : 'regular'} fa-heart"></i>
+          </button>
+        </div>
+
+        <!-- DELIVERY INFO -->
+        <div class="pd-delivery-chips">
+          <span class="pd-chip"><i class="fa-solid fa-truck-fast"></i> ${p.isCustomizable ? '7–8' : '5–6'} working days</span>
+          <span class="pd-chip"><i class="fa-solid fa-shield-halved"></i> Safe & Secure</span>
+          <span class="pd-chip"><i class="fa-solid fa-box-open"></i> Premium Packaging</span>
+          ${p.price > 999 ? '<span class="pd-chip"><i class="fa-solid fa-gift"></i> Free Shipping</span>' : '<span class="pd-chip"><i class="fa-solid fa-motorcycle"></i> Delivery Rs. 60</span>'}
+        </div>
+
+        <div class="pd-divider"></div>
+
+        <!-- META -->
+        <div class="pd-meta-grid">
+          <div class="pd-meta-row"><strong>Color / Theme:</strong><br>${p.color}</div>
+          <div class="pd-meta-row"><strong>Material:</strong><br>${p.material}</div>
+          <div class="pd-meta-row"><strong>Category:</strong><br>${p.category}</div>
+          <div class="pd-meta-row"><strong>Type:</strong><br>${p.isCustomizable ? 'Customizable' : 'Readymade'}</div>
+        </div>
+
+        <div class="pd-divider"></div>
+
+        <!-- WHATSAPP CTA -->
+        <a href="https://wa.me/919228221331?text=Hi%20VibrantGlaze!%20I%20want%20to%20enquire%20about%3A%20${encodeURIComponent(p.title)}"
+           target="_blank" class="pd-whatsapp-cta">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span><strong>Have a question?</strong> Chat with our designer on WhatsApp for custom queries, bulk orders & more.</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- REVIEWS SECTION -->
+    <div class="pd-reviews-section">
+      <div class="pd-reviews-header">
+        <h2>Customer Reviews</h2>
+        ${reviewCount > 0 ? `
+        <div class="pd-avg-rating">
+          <div class="pd-avg-num">${p.rating}</div>
+          <div>
+            <div class="pd-avg-stars">${stars}</div>
+            <div class="pd-avg-count">Based on ${reviewCount} review${reviewCount !== 1 ? 's' : ''}</div>
+          </div>
+        </div>` : ''}
+      </div>
+      ${reviewCount > 0 ? `
+      <div class="pd-reviews-grid">
+        ${(p.reviews || []).map(r => `
+          <div class="pd-review-card">
+            <div class="pd-review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+            <p class="pd-review-text">"${r.comment}"</p>
+            ${r.photo ? `<img src="${r.photo}" alt="Review photo" class="pd-review-photo" onerror="this.style.display='none'">` : ''}
+            <div class="pd-review-author">
+              <div class="pd-review-avatar">${r.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}</div>
+              <div>
+                <div class="pd-review-author-name">${r.name}</div>
+                <div class="pd-review-author-date">${r.date}</div>
+              </div>
+            </div>
+          </div>`).join('')}
+      </div>` : `
+      <div style="text-align:center;padding:48px 20px;color:var(--text-secondary)">
+        <i class="fa-regular fa-star" style="font-size:40px;opacity:0.2;margin-bottom:14px;display:block"></i>
+        <p>No reviews yet — be the first to share your experience!</p>
+        <a href="https://wa.me/919228221331?text=I%20want%20to%20review%20${encodeURIComponent(p.title)}" target="_blank"
+           style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:10px 22px;background:var(--gold-gradient);color:#fff;border-radius:8px;font-size:13px;font-weight:600">
+          <i class="fa-brands fa-whatsapp"></i> Share Your Review via WhatsApp
+        </a>
+      </div>`}
+    </div>
+
+    <!-- RELATED PRODUCTS -->
+    ${related.length > 0 ? `
+    <div class="pd-related-section">
+      <div class="pd-related-header">
+        <h2>You May Also Like</h2>
+        <a href="shop.html?cat=${encodeURIComponent(p.category)}" class="btn btn-text">View All ${p.category} <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="products-grid-showcase">
+        ${related.map(rp => renderProductCard(rp)).join('')}
+      </div>
+    </div>` : ''}
+  `;
+
+  document.getElementById('pd-skeleton').style.display = 'none';
+  const content = document.getElementById('pd-content');
+  content.innerHTML = html;
+  content.style.display = 'block';
+}
+
+function pdSelectSize(s) {
+  pdSelectedSize = s;
+  const p = VG.products.find(x => x.id === pdProductId);
+  if (!p) return;
+  const extra = p.sizePrices?.[s] || 0;
+  const newPrice = p.price + extra;
+  const priceEl = document.getElementById('pd-price-display');
+  if (priceEl) priceEl.textContent = 'Rs. ' + newPrice.toLocaleString('en-IN');
+  document.querySelectorAll('.pd-size-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().startsWith(s)));
+}
+
+function pdChangeQty(delta) {
+  pdQty = Math.max(1, pdQty + delta);
+  const el = document.getElementById('pd-qty-val');
+  if (el) el.textContent = pdQty;
+}
+
+function pdAddToCart() {
+  const btn = document.getElementById('pd-add-btn');
+  addToCart(pdProductId, pdQty, pdSelectedSize, btn);
+  const customText = document.getElementById('pd-custom-text')?.value?.trim();
+  if (customText) showToast(`Custom note saved: "${customText}"`);
+  // Update btn text after add
+  if (btn) {
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Added to Bag!';
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fa-solid fa-arrow-right"></i> Go to Cart';
+      btn.onclick = () => window.location.href = 'cart.html';
+    }, 1500);
+  }
+}
+
+function pdSaveDesign() {
+  if (!VG.user) {
+    showToast("Please log in to save your design.", "info");
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+    return;
+  }
+  const p = VG.products.find(x => x.id === pdProductId);
+  if (!p) return;
+  const customText = document.getElementById('pd-custom-text')?.value?.trim() || '';
+  if (!customText) {
+    showToast("Please enter personalization text first.", "error");
+    return;
+  }
+  const d = {
+    product: p.title,
+    letter: customText,
+    color: p.color || '',
+    size: pdSelectedSize || 'Standard',
+    notes: customText,
+    date: new Date().toLocaleDateString("en-IN")
+  };
+  if (!VG.user.savedDesigns) VG.user.savedDesigns = [];
+  const exists = VG.user.savedDesigns.some(x => x.product === d.product && x.letter === d.letter && x.size === d.size);
+  if (!exists) {
+    VG.user.savedDesigns.push(d);
+    localStorage.setItem("vg_user", JSON.stringify(VG.user));
+    showToast("Custom design saved successfully!");
+    apiCall('/users/saved-designs', 'POST', { email: VG.user.email, savedDesigns: VG.user.savedDesigns }).catch(() => {});
+  } else {
+    showToast("Design already saved in your account.", "info");
+  }
+}
+
+function pdToggleWishlist() {
+  if (!VG.user) {
+    window.location.href = 'dashboard.html';
+    return;
+  }
+  const wl = VG.user.wishlist || [];
+  const isWishlisted = wl.includes(pdProductId);
+  if (isWishlisted) {
+    VG.user.wishlist = wl.filter(x => x !== pdProductId);
+    showToast('Removed from wishlist', 'info');
+  } else {
+    VG.user.wishlist = [...wl, pdProductId];
+    showToast('Added to wishlist!');
+  }
+  localStorage.setItem('vg_user', JSON.stringify(VG.user));
+  apiCall('/users/wishlist', 'POST', { email: VG.user.email, wishlist: VG.user.wishlist }).catch(() => {});
+  const btn = document.getElementById('pd-wish-btn');
+  if (btn) {
+    const nowWishlisted = VG.user.wishlist.includes(pdProductId);
+    btn.classList.toggle('active', nowWishlisted);
+    btn.querySelector('i').className = `fa-${nowWishlisted ? 'solid' : 'regular'} fa-heart`;
+  }
+}
+
+function showNotFound(msg) {
+  document.getElementById('pd-skeleton').style.display = 'none';
+  const content = document.getElementById('pd-content');
+  content.innerHTML = `
+    <div class="pd-not-found">
+      <i class="fa-solid fa-gem"></i>
+      <h2>Product Not Found</h2>
+      <p>${msg}</p>
+      <a href="shop.html" class="btn btn-primary" style="margin-top:24px"><i class="fa-solid fa-store"></i> Browse All Products</a>
+    </div>`;
+  content.style.display = 'block';
+}
+</script>
+</body>
+</html>
